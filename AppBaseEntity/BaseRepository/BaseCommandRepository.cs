@@ -29,6 +29,11 @@ namespace AppBaseEntity.BaseRepository
             return domainModel;
         }
 
-        
+        public async Task<TDomainModel> Update<TDomainModel, TEntityModel>(TDomainModel domainModel) 
+        {
+            var entity = _mapper.Map<TDomainModel, TEntityModel>(domainModel);
+            _dbContext.Update(entity);
+            return await _dbContext.SaveChangesAsync() > 0 ? domainModel : default(TDomainModel);
+        }        
     }
 }
