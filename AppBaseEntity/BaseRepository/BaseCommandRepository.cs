@@ -34,6 +34,7 @@ namespace AppBaseEntity.BaseRepository
             var entity = _mapper.Map<TDomainModel, TEntityModel>(domainModel);
             _dbContext.Update(entity);
             return await _dbContext.SaveChangesAsync() > 0 ? domainModel : default(TDomainModel);
-        }        
+        }
+
     }
 }
