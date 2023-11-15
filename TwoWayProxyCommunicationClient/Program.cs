@@ -1,9 +1,13 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text.Json.Serialization;
 using TwoWayProxyCommunication;
 using TwoWayProxyCommunication.Attributes;
 using TwoWayProxyCommunication.Core.Interface;
+using TwoWayProxyCommunication.Model;
 
 Console.WriteLine("Starting TwoWayProxyCommunicationClient");
 
@@ -23,17 +27,30 @@ foreach (var type in types)
     Console.WriteLine($"Type with ProxyService attribute: {type.Name}");
 }
 
+var builder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("Appsetting.json");
 
+var configuration = builder.Build();
+
+var serviceConfiguration = configuration.GetSection("ServiceConfiguration").Get<ServiceConfiguration>();
+
+services.AddSingleton(serviceConfiguration);
+services.AddHttpClient();
 services.AddClientProxy(types);
 
 
 var provider = services.BuildServiceProvider();
 
+var _httpClient = provider.GetRequiredService<HttpClient>();
+_httpClient.BaseAddress = new Uri("https://hub.dummyapis.com/employee?noofRecords=10&idStarts=1001");
+var res = await _httpClient.GetAsync(string.Empty);
+
 var employeeService = provider.GetRequiredService<IEmployeeService>();
 
-var result = employeeService.GetEmployees();
+var employees = employeeService.GetEmployees();
 
-foreach (var name in result)
+foreach (var employee in employees)
 {
-    Console.WriteLine(name);
+    Console.WriteLine(JsonConvert.SerializeObject(employee));
 }

@@ -9,11 +9,11 @@ namespace TwoWayProxyCommunication.Attributes
     [AttributeUsage(AttributeTargets.Interface)]
     public class ProxyService : Attribute
     {
-        private readonly string _serviceName;
+        public readonly string serviceName;
 
         public ProxyService(string serviceName)
         {
-            _serviceName = serviceName;
+            this.serviceName = serviceName;
         }
     }
 }

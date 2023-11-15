@@ -13,7 +13,7 @@ namespace TwoWayProxyCommunication.Core.Interface
     [ProxyService("EmployeeService")]
     public interface IEmployeeService
     {
-        List<string> GetEmployees();
+        List<Employee> GetEmployees();
         //AppResult<List<Employee>> GetEmployees();
     }
 }
