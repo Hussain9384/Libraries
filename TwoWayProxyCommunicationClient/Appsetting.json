@@ -1,0 +1,11 @@
+{
+  "ServiceConfiguration": {
+    "AppServiceConfigs": [
+      {
+        "ServiceName": "EmployeeService",
+        "RetryLimit": "2",
+        "BaseUrl": "https://hub.dummyapis.com/employee?noofRecords=10&idStarts=1001",
+      },
+    ]
+  }
+}
